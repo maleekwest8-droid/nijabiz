@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NijaBiz - Nigerian Local Business Directory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .business-card:hover { transform: translateY(-4px); transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 glass border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">N</div>
+                <span class="text-xl font-bold text-slate-900">NijaBiz</span>
+            </div>
+            <button onclick="toggleModal('submitModal')" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors">
+                + List Business
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white border-b border-slate-200 py-12">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-4xl font-extrabold text-slate-900 mb-4">Find Local Businesses in Nigeria</h1>
+            <p class="text-slate-600 mb-8">Connecting you with verified shops, services, and vendors across the country.</p>
+            
+            <div class="relative max-w-2xl mx-auto">
+                <input type="text" id="searchInput" placeholder="Search by name or category (e.g. 'Restaurant' or 'Lagos Shop')..." 
+                       class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all outline-none">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        <div id="businessGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cards will be injected here -->
+            <div class="col-span-full text-center py-20 grayscale opacity-50">
+                <p class="text-slate-500">Loading businesses...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 px-4 text-center">
+        <p>© 2026 NijaBiz. Connecting Nigerian Businesses to the World.</p>
+    </footer>
+
+    <!-- Submit Modal -->
+    <div id="submitModal" class="hidden fixed inset-0 z-[60] overflow-y-auto px-4 py-6">
+        <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="toggleModal('submitModal')"></div>
+        <div class="relative max-w-lg mx-auto bg-white rounded-3xl shadow-2xl p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-900">List Your Business</h2>
+                <button onclick="toggleModal('submitModal')" class="text-slate-400 hover:text-slate-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="businessForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Business Name *</label>
+                    <input type="text" name="name" required class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Category *</label>
+                    <input type="text" name="category" placeholder="e.g. Fashion, Food, Tech" required class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Phone Number *</label>
+                        <input type="tel" name="phone" placeholder="+234..." required class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">WhatsApp</label>
+                        <input type="tel" name="whatsapp" placeholder="+234..." class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Address *</label>
+                    <input type="text" name="address" required class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                    <textarea name="description" rows="3" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-green-600/20">
+                    Add My Business
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/businesses';
+        const businessGrid = document.getElementById('businessGrid');
+        const searchInput = document.getElementById('searchInput');
+        const businessForm = document.getElementById('businessForm');
+
+        // Fetch and display businesses
+        async function fetchBusinesses(search = '') {
+            try {
+                const response = await fetch(`${API_URL}${search ? '?search=' + encodeURIComponent(search) : ''}`);
+                const businesses = await response.json();
+                renderBusinesses(businesses);
+            } catch (err) {
+                console.error('Failed to fetch:', err);
+            }
+        }
+
+        function renderBusinesses(businesses) {
+            if (businesses.length === 0) {
+                businessGrid.innerHTML = `
+                    <div class="col-span-full text-center py-20">
+                        <p class="text-slate-500">No businesses found. Be the first to list one!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            businessGrid.innerHTML = businesses.map(biz => `
+                <div class="business-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                            ${biz.category}
+                        </span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">${biz.name}</h3>
+                    <p class="text-slate-500 text-sm mb-4 line-clamp-2">${biz.description}</p>
+                    
+                    <div class="flex items-start space-x-2 text-sm text-slate-600 mb-6">
+                        <svg class="h-5 w-5 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>${biz.address}</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="tel:${biz.phone}" class="flex items-center justify-center space-x-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 rounded-2xl transition-all">
+                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 005.47 5.47l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                            <span>Call</span>
+                        </a>
+                        ${biz.whatsapp ? `
+                            <a href="https://wa.me/${biz.whatsapp.replace(/\+/g, '')}" target="_blank" class="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-2xl transition-all">
+                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.29-4.143c1.551.921 3.42 1.407 5.325 1.408 5.603 0 10.158-4.554 10.161-10.158.002-2.716-1.056-5.269-2.978-7.19-1.921-1.922-4.474-2.981-7.19-2.981-5.607 0-10.162 4.554-10.162 10.159-.001 1.905.525 3.763 1.517 5.352l-.994 3.63 3.722-.976zm11.238-7.794c-.266-.134-1.577-.779-1.821-.867-.245-.089-.422-.134-.599.134-.177.266-.687.866-.843 1.044-.155.177-.311.199-.577.066-.266-.134-1.124-.415-2.141-1.321-.791-.706-1.325-1.577-1.48-1.844-.155-.267-.017-.411.116-.544.12-.12.266-.311.399-.467.133-.156.177-.267.266-.444.089-.178.045-.334-.022-.467-.067-.134-.599-1.445-.821-1.978-.216-.52-.435-.449-.599-.458-.155-.008-.333-.01-.511-.01-.177 0-.466.067-.71.334-.244.267-.932.912-.932 2.224 0 1.312.954 2.578 1.087 2.756.133.178 1.878 2.87 4.549 4.022.635.274 1.131.438 1.518.561.637.202 1.216.174 1.674.106.51-.076 1.577-.645 1.8-.1.237-.1.444-.222.134-.134-.333-.223-.555L17.585 12.063z"/></svg>
+                                <span>WA</span>
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search events
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                fetchBusinesses(e.target.value);
+            }, 300);
+        });
+
+        // Form submission
+        businessForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(businessForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    toggleModal('submitModal');
+                    businessForm.reset();
+                    fetchBusinesses();
+                    alert('Business listed successfully!');
+                } else {
+                    const err = await response.json();
+                    alert('Error: ' + JSON.stringify(err.detail));
+                }
+            } catch (err) {
+                alert('Failed to connect to server.');
+            }
+        });
+
+        function toggleModal(id) {
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        // Initial load
+        fetchBusinesses();
+    </script>
+</body>
+</html>
