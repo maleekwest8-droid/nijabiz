@@ -17,6 +17,7 @@ STATIC_DIR = os.path.join(BASE_DIR, "static")
 UPLOAD_DIR = os.path.join(STATIC_DIR, "uploads")
 
 # Create database tables
+database.run_migrations(engine)
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="BizBook - Nigerian Local Business Directory")

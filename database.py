@@ -22,6 +22,51 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+from sqlalchemy import inspect, text
+
+def run_migrations(engine):
+    """
+    Checks the database for missing columns in the 'businesses' table 
+    and adds them based on the current models.
+    """
+    inspector = inspect(engine)
+    
+    # Check if 'businesses' table exists
+    if 'businesses' not in inspector.get_table_names():
+        return
+
+    existing_columns = [col['name'] for col in inspector.get_columns('businesses')]
+    
+    # Define expected columns and their types for SQLite
+    # We only need to add columns that were added AFTER the initial setup
+    new_columns = {
+        "region": "VARCHAR",
+        "state": "VARCHAR",
+        "city": "VARCHAR",
+        "vacancy_status": "VARCHAR DEFAULT 'None'",
+        "is_verified": "INTEGER DEFAULT 0",
+        "logo_url": "VARCHAR",
+        "instagram": "VARCHAR",
+        "twitter": "VARCHAR",
+        "facebook": "VARCHAR",
+        "opening_hours": "VARCHAR",
+        "google_maps_url": "VARCHAR",
+        "is_featured": "INTEGER DEFAULT 0",
+        "clicks_count": "INTEGER DEFAULT 0",
+        "average_rating": "FLOAT DEFAULT 0.0",
+        "review_count": "INTEGER DEFAULT 0"
+    }
+
+    with engine.connect() as conn:
+        for column_name, column_type in new_columns.items():
+            if column_name not in existing_columns:
+                print(f"Adding missing column: {column_name}")
+                try:
+                    conn.execute(text(f"ALTER TABLE businesses ADD COLUMN {column_name} {column_type}"))
+                    conn.commit()
+                except Exception as e:
+                    print(f"Error adding {column_name}: {e}")
+
 def get_db():
     db = SessionLocal()
     try:

@@ -2,13 +2,9 @@ from sqlalchemy.orm import Session
 import models
 
 def seed_businesses(db: Session):
-    # Check if we already have a large dataset
-    if db.query(models.Business).count() > 10:
+    # ONLY seed if the database is Empty to prevent wiping user data
+    if db.query(models.Business).count() > 0:
         return
-
-    # Clear existing to ensure clean categorized data
-    db.query(models.Business).delete()
-    db.query(models.Review).delete()
 
     businesses = [
         # --- FEATURED BUSINESSES ---
