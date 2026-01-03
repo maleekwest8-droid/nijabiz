@@ -4,13 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NijaBiz - Nigerian Local Business Directory</title>
+    <title>BizBook - Nigerian local Business Directory</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            border: '#334155',
+                            text: '#f1f5f9',
+                            muted: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s ease;
         }
 
         .glass {
@@ -18,40 +37,82 @@
             backdrop-filter: blur(10px);
         }
 
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: #334155;
+        }
+
         .business-card:hover {
             transform: translateY(-4px);
             transition: all 0.3s ease;
         }
+
+        .featured-card {
+            border: 2px solid #16a34a !important;
+            background: linear-gradient(to bottom right, #ffffff, #f0fdf4) !important;
+        }
+
+        .dark .featured-card {
+            border-color: #22c55e !important;
+            background: linear-gradient(to bottom right, #1e293b, #064e3b) !important;
+        }
+
+        .star-rating {
+            color: #fbbf24;
+        }
+
+        .social-btn {
+            transition: transform 0.2s;
+        }
+
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
-<body class="bg-slate-50 min-h-screen">
+<body class="bg-slate-50 dark:bg-dark-bg min-h-screen text-slate-900 dark:text-slate-100">
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 glass border-b border-slate-200">
+    <nav class="sticky top-0 z-50 glass border-b border-slate-200 dark:border-dark-border">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">N
+                <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">B
                 </div>
-                <span class="text-xl font-bold text-slate-900">NijaBiz</span>
+                <span class="text-xl font-bold text-slate-900 dark:text-white">BizBook</span>
             </div>
-            <button onclick="toggleModal('submitModal')"
-                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors">
-                + List Business
-            </button>
+            <div class="flex items-center space-x-4">
+                <button id="themeToggle"
+                    class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="moonIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg id="sunIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <button onclick="toggleModal('submitModal')"
+                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors">
+                    + List Business
+                </button>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="bg-white border-b border-slate-200 py-12">
+    <header class="bg-white dark:bg-dark-bg border-b border-slate-200 dark:border-dark-border py-12">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <h1 class="text-4xl font-extrabold text-slate-900 mb-4">Find Local Businesses in Nigeria</h1>
-            <p class="text-slate-600 mb-8">Connecting you with verified shops, services, and vendors across the country.
+            <h1 class="text-4xl font-extrabold text-slate-900 dark:text-white mb-4">Find Local Businesses in Nigeria
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 mb-8">Connecting you with verified shops, services, and vendors
+                across the country.
             </p>
 
             <div class="relative max-w-4xl mx-auto space-y-4">
                 <div class="relative">
                     <input type="text" id="searchInput" placeholder="Search by name or category..."
-                        class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all outline-none">
+                        class="w-full pl-12 pr-4 py-4 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all outline-none">
                     <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -63,7 +124,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <select id="stateFilter"
-                        class="px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
+                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
                         <option value="">All States</option>
                         <option value="Lagos">Lagos</option>
                         <option value="Abuja">Abuja</option>
@@ -72,9 +133,9 @@
                         <option value="Kano">Kano</option>
                     </select>
                     <input type="text" id="cityFilter" placeholder="Filter by City (e.g. Lekki)"
-                        class="px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
+                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
                     <select id="vacancyFilter"
-                        class="px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
+                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
                         <option value="">All Job Status</option>
                         <option value="Vacancy Available">Hiring</option>
                         <option value="None">No Vacancy</option>
@@ -89,36 +150,83 @@
         <div id="businessGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Cards will be injected here -->
             <div class="col-span-full text-center py-20 grayscale opacity-50">
-                <p class="text-slate-500">Loading businesses...</p>
+                <p class="text-slate-500 dark:text-slate-400">Loading businesses...</p>
             </div>
         </div>
 
         <!-- Pagination -->
         <div class="mt-12 flex items-center justify-center space-x-4">
             <button id="prevBtn" onclick="changePage(-1)" disabled
-                class="px-6 py-2 bg-white border border-slate-200 rounded-xl text-slate-600 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors">
+                class="px-6 py-2 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border text-slate-600 dark:text-slate-400 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                 Previous
             </button>
-            <span id="pageInfo" class="text-slate-600 font-medium">Page 1</span>
+            <span id="pageInfo" class="text-slate-600 dark:text-slate-400 font-medium">Page 1</span>
             <button id="nextBtn" onclick="changePage(1)"
-                class="px-6 py-2 bg-white border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 transition-colors">
+                class="px-6 py-2 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border text-slate-600 dark:text-slate-400 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                 Next
             </button>
         </div>
     </main>
 
+    <!-- Review Modal -->
+    <div id="reviewModal" class="hidden fixed inset-0 z-[70] overflow-y-auto px-4 py-6">
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-md" onclick="toggleModal('reviewModal')"></div>
+        <div
+            class="relative max-w-md mx-auto bg-white dark:bg-dark-card rounded-3xl shadow-2xl p-8 border border-white/10">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Write a Review</h2>
+            <p id="reviewBusinessName"
+                class="text-sm text-slate-500 dark:text-slate-400 mb-6 font-medium uppercase tracking-wider"></p>
+
+            <form id="reviewForm" class="space-y-4">
+                <input type="hidden" id="reviewBusinessId">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Rating</label>
+                    <div class="flex space-x-2 text-2xl" id="starInput">
+                        <button type="button" onclick="setRating(1)"
+                            class="star-btn hover:scale-110 transition-transform">☆</button>
+                        <button type="button" onclick="setRating(2)"
+                            class="star-btn hover:scale-110 transition-transform">☆</button>
+                        <button type="button" onclick="setRating(3)"
+                            class="star-btn hover:scale-110 transition-transform">☆</button>
+                        <button type="button" onclick="setRating(4)"
+                            class="star-btn hover:scale-110 transition-transform">☆</button>
+                        <button type="button" onclick="setRating(5)"
+                            class="star-btn hover:scale-110 transition-transform">☆</button>
+                    </div>
+                    <input type="hidden" id="ratingValue" value="5" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Your Name</label>
+                    <input type="text" id="reviewUserName" required placeholder="John Doe"
+                        class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Comment</label>
+                    <textarea id="reviewComment" rows="3" required placeholder="Great service!"
+                        class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl outline-none focus:ring-2 focus:ring-green-500"></textarea>
+                </div>
+                <button type="submit"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg active:scale-95">
+                    Submit Review
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- footer -->
     <footer class="bg-slate-900 text-slate-400 py-12 px-4 text-center">
-        <p>© 2026 NijaBiz. Connecting Nigerian Businesses to the World.</p>
+        <p>© 2026 BizBook. Connecting Nigerian Businesses to the World.</p>
     </footer>
 
     <!-- Submit Modal -->
     <div id="submitModal" class="hidden fixed inset-0 z-[60] overflow-y-auto px-4 py-6">
         <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="toggleModal('submitModal')"></div>
-        <div class="relative max-w-lg mx-auto bg-white rounded-3xl shadow-2xl p-8">
+        <div
+            class="relative max-w-lg mx-auto bg-white dark:bg-dark-card rounded-3xl shadow-2xl p-8 border border-white/10">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-slate-900">List Your Business</h2>
-                <button onclick="toggleModal('submitModal')" class="text-slate-400 hover:text-slate-600">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">List Your Business</h2>
+                <button onclick="toggleModal('submitModal')"
+                    class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="6 18L18 6M6 6l12 12" />
@@ -127,62 +235,82 @@
             </div>
 
             <form id="businessForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Business Name *</label>
-                    <input type="text" name="name" required
-                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Category *</label>
-                    <input type="text" name="category" placeholder="e.g. Fashion, Food, Tech" required
-                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Phone Number *</label>
-                        <input type="tel" name="phone" placeholder="+234..." required
-                            class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Business Name
+                            *</label>
+                        <input type="text" name="name" required
+                            class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">WhatsApp</label>
-                        <input type="tel" name="whatsapp" placeholder="+234..."
-                            class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Logo URL
+                            (Optional)</label>
+                        <input type="text" name="logo_url" placeholder="https://..."
+                            class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">State *</label>
-                        <input type="text" name="state" placeholder="e.g. Lagos" required
-                            class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Category
+                            *</label>
+                        <input type="text" name="category" placeholder="e.g. Fashion, Food" required
+                            class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">City *</label>
-                        <input type="text" name="city" placeholder="e.g. Lekki" required
-                            class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Hours</label>
+                        <input type="text" name="opening_hours" placeholder="e.g. Mon-Fri 9-5"
+                            class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
                     </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Address *</label>
-                    <input type="text" name="address" required
-                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Phone *</label>
+                        <input type="tel" name="phone" required
+                            class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">WhatsApp</label>
+                        <input type="tel" name="whatsapp"
+                            class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Job Vacancy?</label>
-                    <select name="vacancy_status"
-                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
-                        <option value="None">No Vacancy</option>
-                        <option value="Vacancy Available">Yes, Currently Hiring</option>
-                    </select>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 text-[10px]">Instagram</label>
+                        <input type="text" name="instagram" placeholder="@user"
+                            class="w-full px-2 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-lg focus:ring-green-500 outline-none">
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 text-[10px]">Twitter</label>
+                        <input type="text" name="twitter" placeholder="@user"
+                            class="w-full px-2 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-lg focus:ring-green-500 outline-none">
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 text-[10px]">Maps
+                            URL</label>
+                        <input type="text" name="google_maps_url" placeholder="URL"
+                            class="w-full px-2 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-lg focus:ring-green-500 outline-none">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
-                    <textarea name="description" rows="2"
-                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none"></textarea>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><input type="text" name="state" placeholder="State *" required
+                            class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl outline-none">
+                    </div>
+                    <div><input type="text" name="city" placeholder="City *" required
+                            class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl outline-none">
+                    </div>
                 </div>
+                <input type="text" name="address" placeholder="Address *" required
+                    class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl outline-none">
+                <textarea name="description" rows="1" placeholder="Description"
+                    class="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border dark:text-white rounded-xl outline-none"></textarea>
                 <button type="submit"
-                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-green-600/20">
-                    Add My Business
-                </button>
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg active:scale-95">Register
+                    Business</button>
             </form>
         </div>
     </div>
@@ -198,9 +326,36 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const pageInfo = document.getElementById('pageInfo');
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
 
         let currentPage = 1;
-        const limit = 9; // Display 9 businesses per page (3x3 grid)
+        const limit = 9;
+
+        // Theme Management
+        function initTheme() {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+
+            sunIcon.classList.toggle('hidden');
+            moonIcon.classList.toggle('hidden');
+        });
+
+        initTheme();
 
         // Fetch and display businesses
         async function fetchBusinesses() {
@@ -245,55 +400,59 @@
         function renderBusinesses(businesses) {
             if (businesses.length === 0) {
                 businessGrid.innerHTML = `
-                    <div class="col-span-full text-center py-20">
-                        <p class="text-slate-500">No businesses found. Be the first to list one!</p>
+                    <div class="col-span-full text-center py-20 grayscale opacity-50">
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">No businesses found. Be the first to list one!</p>
                     </div>
                 `;
                 return;
             }
 
-            businessGrid.innerHTML = businesses.map(biz => `
-                <div class="business-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl relative overflow-hidden">
-                    ${biz.is_verified ? `
-                        <div class="absolute top-4 right-4 text-blue-500" title="Verified Business">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>
+            businessGrid.innerHTML = businesses.map(biz => {
+                const rating = biz.average_rating || 0;
+                const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+                const cardClass = biz.is_featured ? 'featured-card shadow-green-100 dark:shadow-green-900/10' : '';
+
+                return `
+                <div class="business-card bg-white dark:bg-dark-card p-6 rounded-3xl border border-slate-100 dark:border-dark-border shadow-sm hover:shadow-xl relative overflow-hidden transition-all flex flex-col ${cardClass}">
+                    ${biz.is_featured ? '<div class="absolute -right-12 top-6 bg-green-600 text-white text-[10px] font-bold px-12 py-1 rotate-45">FEATURED</div>' : ''}
+                    <div class="flex items-start space-x-4 mb-4">
+                        <div class="w-16 h-16 rounded-xl bg-slate-50 dark:bg-slate-800 flex-shrink-0 overflow-hidden border dark:border-dark-border">
+                            <img src="${biz.logo_url || 'https://api.dicebear.com/7.x/initials/svg?seed=' + biz.name}" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=${biz.name}'">
                         </div>
-                    ` : ''}
-                    
-                    <div class="flex gap-2 mb-4 flex-wrap">
-                        <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                            ${biz.category}
-                        </span>
-                        ${biz.vacancy_status !== 'None' ? `
-                            <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                                💼 Hiring
-                            </span>
-                        ` : ''}
+                        <div class="flex-grow pt-1">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white leading-tight cursor-pointer hover:text-green-600 transition-colors" onclick="trackClick(${biz.id}, '${biz.google_maps_url}')">${biz.name}</h3>
+                            <div class="flex items-center space-x-1 mt-1">
+                                <span class="text-amber-500 text-xs">${stars}</span>
+                                <span class="text-[10px] text-slate-400">(${biz.review_count || 0})</span>
+                            </div>
+                        </div>
                     </div>
-
-                    <h3 class="text-xl font-bold text-slate-900 mb-1">${biz.name}</h3>
-                    <p class="text-slate-400 text-xs font-semibold mb-3">📍 ${biz.city}, ${biz.state}</p>
-                    <p class="text-slate-500 text-sm mb-4 line-clamp-2">${biz.description}</p>
-                    
-                    <div class="flex items-start space-x-2 text-sm text-slate-600 mb-6 min-h-[40px]">
-                        <svg class="h-4 w-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        <span class="line-clamp-2">${biz.address}</span>
+                    <div class="flex gap-2 mb-3">
+                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">${biz.category}</span>
+                        ${biz.vacancy_status !== 'None' ? '<span class="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">💼 Hiring</span>' : ''}
                     </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <a href="tel:${biz.phone}" class="flex items-center justify-center space-x-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 rounded-2xl transition-all">
-                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 005.47 5.47l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-                            <span>Call</span>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-4 line-clamp-3 italic">${biz.description}</p>
+                    <div class="flex justify-between items-center text-[10px] text-slate-400 mb-6 font-medium">
+                        <span class="flex items-center gap-1"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg> ${biz.city}, ${biz.state}</span>
+                        <span class="flex items-center gap-1"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg> ${biz.opening_hours || '9am - 5pm'}</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3 mb-6 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-xl border dark:border-dark-border">
+                        ${biz.instagram ? `<a href="https://instagram.com/${biz.instagram}" target="_blank" class="text-pink-500 hover:scale-110 transition-transform"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>` : ''}
+                        ${biz.whatsapp ? `<a href="https://wa.me/${biz.whatsapp.replace(/\+/g, '')}" target="_blank" class="text-[#25D366] hover:scale-110 transition-transform"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.29-4.143c1.551.921 3.42 1.407 5.325 1.408 5.603 0 10.158-4.554 10.161-10.158.002-2.716-1.056-5.269-2.978-7.19-1.921-1.922-4.474-2.981-7.19-2.981-5.607 0-10.162 4.554-10.162 10.159-.001 1.905.525 3.763 1.517 5.352l-.994 3.63 3.722-.976zm11.238-7.794c-.266-.134-1.577-.779-1.821-.867-.245-.089-.422-.134-.599.134-.177.266-.687.866-.843 1.044-.155.177-.311.199-.577.066-.266-.134-1.124-.415-2.141-1.321-.791-.706-1.325-1.577-1.48-1.844-.155-.267-.017-.411.116-.544.12-.12.266-.311.399-.467.133-.156.177-.267.266-.444.089-.178.045-.334-.022-.467-.067-.134-.599-1.445-.821-1.978-.216-.52-.435-.449-.599-.458-.155-.008-.333-.01-.511-.01-.177 0-.466.067-.71.334-.244.267-.932.912-.932 2.224 0 1.312.954 2.578 1.087 2.756.133.178 1.878 2.87 4.549 4.022.635.274 1.131.438 1.518.561.637.202 1.216.174 1.674.106.51-.076 1.577-.645 1.8-.1.237-.1.444-.222.134-.134-.333-.223-.555L17.585 12.063z"/></svg></a>` : ''}
+                        <div class="flex-grow"></div>
+                        <button onclick="openReviewModal(${biz.id}, '${biz.name}')" class="text-[10px] font-bold text-green-600 hover:text-green-700 transition-colors uppercase tracking-tight">Review</button>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 mt-auto">
+                        <a href="tel:${biz.phone}" onclick="trackClick(${biz.id})" class="bg-slate-900 dark:bg-slate-100 hover:opacity-90 text-white dark:text-slate-900 font-bold py-3 rounded-2xl transition-all active:scale-95 shadow-lg shadow-slate-900/10 flex items-center justify-center">
+                            <span class="text-xs">Call Now</span>
                         </a>
-                        ${biz.whatsapp ? `
-                            <a href="https://wa.me/${biz.whatsapp.replace(/\+/g, '')}" target="_blank" class="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-2xl transition-all">
-                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.29-4.143c1.551.921 3.42 1.407 5.325 1.408 5.603 0 10.158-4.554 10.161-10.158.002-2.716-1.056-5.269-2.978-7.19-1.921-1.922-4.474-2.981-7.19-2.981-5.607 0-10.162 4.554-10.162 10.159-.001 1.905.525 3.763 1.517 5.352l-.994 3.63 3.722-.976zm11.238-7.794c-.266-.134-1.577-.779-1.821-.867-.245-.089-.422-.134-.599.134-.177.266-.687.866-.843 1.044-.155.177-.311.199-.577.066-.266-.134-1.124-.415-2.141-1.321-.791-.706-1.325-1.577-1.48-1.844-.155-.267-.017-.411.116-.544.12-.12.266-.311.399-.467.133-.156.177-.267.266-.444.089-.178.045-.334-.022-.467-.067-.134-.599-1.445-.821-1.978-.216-.52-.435-.449-.599-.458-.155-.008-.333-.01-.511-.01-.177 0-.466.067-.71.334-.244.267-.932.912-.932 2.224 0 1.312.954 2.578 1.087 2.756.133.178 1.878 2.87 4.549 4.022.635.274 1.131.438 1.518.561.637.202 1.216.174 1.674.106.51-.076 1.577-.645 1.8-.1.237-.1.444-.222.134-.134-.333-.223-.555L17.585 12.063z"/></svg>
-                                <span>WA</span>
-                            </a>
-                        ` : ''}
+                        <button onclick="trackClick(${biz.id}, '${biz.google_maps_url || 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(biz.name + ' ' + biz.city)}')" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold py-3 rounded-2xl text-xs active:scale-95 transition-all">Map</button>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Search and filter events
@@ -308,6 +467,53 @@
         stateFilter.addEventListener('change', fetchBusinesses);
         cityFilter.addEventListener('input', triggerFetch);
         vacancyFilter.addEventListener('change', fetchBusinesses);
+
+        async function trackClick(businessId, url = null) {
+            try {
+                await fetch(`/businesses/${businessId}/click`, { method: 'POST' });
+                if (url && url !== 'null' && url !== '') window.open(url, '_blank');
+            } catch (err) { console.error(err); }
+        }
+
+        function openReviewModal(id, name) {
+            document.getElementById('reviewBusinessId').value = id;
+            document.getElementById('reviewBusinessName').innerText = name;
+            setRating(5);
+            toggleModal('reviewModal');
+        }
+
+        function setRating(val) {
+            document.getElementById('ratingValue').value = val;
+            const btns = document.querySelectorAll('.star-btn');
+            btns.forEach((btn, i) => {
+                btn.innerText = i < val ? '★' : '☆';
+                btn.classList.toggle('text-amber-500', i < val);
+            });
+        }
+
+        document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                business_id: parseInt(document.getElementById('reviewBusinessId').value),
+                rating: parseInt(document.getElementById('ratingValue').value),
+                user_name: document.getElementById('reviewUserName').value,
+                comment: document.getElementById('reviewComment').value
+            };
+
+            try {
+                const res = await fetch('/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (res.ok) {
+                    toggleModal('reviewModal');
+                    document.getElementById('reviewForm').reset();
+                    fetchBusinesses();
+                    alert('Review submitted!');
+                }
+            } catch (err) { alert('Failed to submit review'); }
+        });
 
         // Form submission
         businessForm.addEventListener('submit', async (e) => {

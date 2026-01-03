@@ -1,5 +1,5 @@
 ---
-title: NijaBiz Local Directory
+title: BizBook Local Directory
 emoji: 💼
 colorFrom: green
 colorTo: gray
@@ -8,7 +8,7 @@ license: mit
 pinned: false
 ---
 
-# NijaBiz - Local Business Directory MVP
+# BizBook - Nigerian Local Business Directory MVP
 
 A simple, functional, and aesthetically pleasing local business directory for Nigerian businesses built with FastAPI and SQLite.
 
