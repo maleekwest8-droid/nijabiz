@@ -61,16 +61,29 @@ def health_check():
 @app.get("/businesses", response_model=List[schemas.Business])
 def get_businesses(
     search: Optional[str] = Query(None, description="Search by name or category"),
+    state: Optional[str] = Query(None),
+    city: Optional[str] = Query(None),
+    vacancy: Optional[str] = Query(None),
+    skip: int = 0,
+    limit: int = 10,
     db: Session = Depends(get_db)
 ):
     query = db.query(models.Business)
+    # ... filters ...
     if search:
         search_filter = f"%{search}%"
         query = query.filter(
             (models.Business.name.ilike(search_filter)) | 
             (models.Business.category.ilike(search_filter))
         )
-    return query.all()
+    if state:
+        query = query.filter(models.Business.state.ilike(f"%{state}%"))
+    if city:
+        query = query.filter(models.Business.city.ilike(f"%{city}%"))
+    if vacancy:
+        query = query.filter(models.Business.vacancy_status.ilike(f"%{vacancy}%"))
+        
+    return query.offset(skip).limit(limit).all()
 
 @app.get("/businesses/{business_id}", response_model=schemas.Business)
 def get_business(business_id: int, db: Session = Depends(get_db)):

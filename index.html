@@ -1,26 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NijaBiz - Nigerian Local Business Directory</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .business-card:hover { transform: translateY(-4px); transition: all 0.3s ease; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .business-card:hover {
+            transform: translateY(-4px);
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
+
 <body class="bg-slate-50 min-h-screen">
     <!-- Navigation -->
     <nav class="sticky top-0 z-50 glass border-b border-slate-200">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">N</div>
+                <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">N
+                </div>
                 <span class="text-xl font-bold text-slate-900">NijaBiz</span>
             </div>
-            <button onclick="toggleModal('submitModal')" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors">
+            <button onclick="toggleModal('submitModal')"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors">
                 + List Business
             </button>
         </div>
@@ -30,15 +45,40 @@
     <header class="bg-white border-b border-slate-200 py-12">
         <div class="max-w-4xl mx-auto px-4 text-center">
             <h1 class="text-4xl font-extrabold text-slate-900 mb-4">Find Local Businesses in Nigeria</h1>
-            <p class="text-slate-600 mb-8">Connecting you with verified shops, services, and vendors across the country.</p>
-            
-            <div class="relative max-w-2xl mx-auto">
-                <input type="text" id="searchInput" placeholder="Search by name or category (e.g. 'Restaurant' or 'Lagos Shop')..." 
-                       class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all outline-none">
-                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+            <p class="text-slate-600 mb-8">Connecting you with verified shops, services, and vendors across the country.
+            </p>
+
+            <div class="relative max-w-4xl mx-auto space-y-4">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Search by name or category..."
+                        class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all outline-none">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <select id="stateFilter"
+                        class="px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
+                        <option value="">All States</option>
+                        <option value="Lagos">Lagos</option>
+                        <option value="Abuja">Abuja</option>
+                        <option value="Rivers">Rivers</option>
+                        <option value="Imo">Imo</option>
+                        <option value="Kano">Kano</option>
+                    </select>
+                    <input type="text" id="cityFilter" placeholder="Filter by City (e.g. Lekki)"
+                        class="px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
+                    <select id="vacancyFilter"
+                        class="px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
+                        <option value="">All Job Status</option>
+                        <option value="Vacancy Available">Hiring</option>
+                        <option value="None">No Vacancy</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -51,6 +91,19 @@
             <div class="col-span-full text-center py-20 grayscale opacity-50">
                 <p class="text-slate-500">Loading businesses...</p>
             </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-12 flex items-center justify-center space-x-4">
+            <button id="prevBtn" onclick="changePage(-1)" disabled
+                class="px-6 py-2 bg-white border border-slate-200 rounded-xl text-slate-600 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors">
+                Previous
+            </button>
+            <span id="pageInfo" class="text-slate-600 font-medium">Page 1</span>
+            <button id="nextBtn" onclick="changePage(1)"
+                class="px-6 py-2 bg-white border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 transition-colors">
+                Next
+            </button>
         </div>
     </main>
 
@@ -66,40 +119,68 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-slate-900">List Your Business</h2>
                 <button onclick="toggleModal('submitModal')" class="text-slate-400 hover:text-slate-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
-            
+
             <form id="businessForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Business Name *</label>
-                    <input type="text" name="name" required class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                    <input type="text" name="name" required
+                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Category *</label>
-                    <input type="text" name="category" placeholder="e.g. Fashion, Food, Tech" required class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                    <input type="text" name="category" placeholder="e.g. Fashion, Food, Tech" required
+                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Phone Number *</label>
-                        <input type="tel" name="phone" placeholder="+234..." required class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                        <input type="tel" name="phone" placeholder="+234..." required
+                            class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">WhatsApp</label>
-                        <input type="tel" name="whatsapp" placeholder="+234..." class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                        <input type="tel" name="whatsapp" placeholder="+234..."
+                            class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">State *</label>
+                        <input type="text" name="state" placeholder="e.g. Lagos" required
+                            class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">City *</label>
+                        <input type="text" name="city" placeholder="e.g. Lekki" required
+                            class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Address *</label>
-                    <input type="text" name="address" required class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                    <input type="text" name="address" required
+                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Job Vacancy?</label>
+                    <select name="vacancy_status"
+                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none">
+                        <option value="None">No Vacancy</option>
+                        <option value="Vacancy Available">Yes, Currently Hiring</option>
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
-                    <textarea name="description" rows="3" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none"></textarea>
+                    <textarea name="description" rows="2"
+                        class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-green-500 focus:border-green-500 outline-none"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-green-600/20">
+                <button type="submit"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-green-600/20">
                     Add My Business
                 </button>
             </form>
@@ -110,17 +191,55 @@
         const API_URL = '/businesses';
         const businessGrid = document.getElementById('businessGrid');
         const searchInput = document.getElementById('searchInput');
+        const stateFilter = document.getElementById('stateFilter');
+        const cityFilter = document.getElementById('cityFilter');
+        const vacancyFilter = document.getElementById('vacancyFilter');
         const businessForm = document.getElementById('businessForm');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageInfo = document.getElementById('pageInfo');
+
+        let currentPage = 1;
+        const limit = 9; // Display 9 businesses per page (3x3 grid)
 
         // Fetch and display businesses
-        async function fetchBusinesses(search = '') {
+        async function fetchBusinesses() {
+            const search = searchInput.value;
+            const state = stateFilter.value;
+            const city = cityFilter.value;
+            const vacancy = vacancyFilter.value;
+            const skip = (currentPage - 1) * limit;
+
+            let query = `?search=${encodeURIComponent(search)}&skip=${skip}&limit=${limit + 1}`;
+            if (state) query += `&state=${encodeURIComponent(state)}`;
+            if (city) query += `&city=${encodeURIComponent(city)}`;
+            if (vacancy) query += `&vacancy=${encodeURIComponent(vacancy)}`;
+
             try {
-                const response = await fetch(`${API_URL}${search ? '?search=' + encodeURIComponent(search) : ''}`);
+                const response = await fetch(`${API_URL}${query}`);
                 const businesses = await response.json();
-                renderBusinesses(businesses);
+
+                // If we fetched limit + 1, it means there's a next page
+                const hasNext = businesses.length > limit;
+                const displayBusinesses = hasNext ? businesses.slice(0, limit) : businesses;
+
+                renderBusinesses(displayBusinesses);
+                updatePaginationControls(hasNext);
             } catch (err) {
                 console.error('Failed to fetch:', err);
             }
+        }
+
+        function updatePaginationControls(hasNext) {
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = !hasNext;
+            pageInfo.innerText = `Page ${currentPage}`;
+        }
+
+        function changePage(delta) {
+            currentPage += delta;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            fetchBusinesses();
         }
 
         function renderBusinesses(businesses) {
@@ -134,18 +253,31 @@
             }
 
             businessGrid.innerHTML = businesses.map(biz => `
-                <div class="business-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                <div class="business-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl relative overflow-hidden">
+                    ${biz.is_verified ? `
+                        <div class="absolute top-4 right-4 text-blue-500" title="Verified Business">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="flex gap-2 mb-4 flex-wrap">
+                        <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                             ${biz.category}
                         </span>
+                        ${biz.vacancy_status !== 'None' ? `
+                            <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                💼 Hiring
+                            </span>
+                        ` : ''}
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">${biz.name}</h3>
+
+                    <h3 class="text-xl font-bold text-slate-900 mb-1">${biz.name}</h3>
+                    <p class="text-slate-400 text-xs font-semibold mb-3">📍 ${biz.city}, ${biz.state}</p>
                     <p class="text-slate-500 text-sm mb-4 line-clamp-2">${biz.description}</p>
                     
-                    <div class="flex items-start space-x-2 text-sm text-slate-600 mb-6">
-                        <svg class="h-5 w-5 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        <span>${biz.address}</span>
+                    <div class="flex items-start space-x-2 text-sm text-slate-600 mb-6 min-h-[40px]">
+                        <svg class="h-4 w-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span class="line-clamp-2">${biz.address}</span>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
@@ -164,14 +296,18 @@
             `).join('');
         }
 
-        // Search events
+        // Search and filter events
         let searchTimeout;
-        searchInput.addEventListener('input', (e) => {
+        const triggerFetch = () => {
+            currentPage = 1; // Reset to page 1 on search
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                fetchBusinesses(e.target.value);
-            }, 300);
-        });
+            searchTimeout = setTimeout(() => fetchBusinesses(), 300);
+        };
+
+        searchInput.addEventListener('input', triggerFetch);
+        stateFilter.addEventListener('change', fetchBusinesses);
+        cityFilter.addEventListener('input', triggerFetch);
+        vacancyFilter.addEventListener('change', fetchBusinesses);
 
         // Form submission
         businessForm.addEventListener('submit', async (e) => {
@@ -208,4 +344,5 @@
         fetchBusinesses();
     </script>
 </body>
+
 </html>

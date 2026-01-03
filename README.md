@@ -12,12 +12,12 @@ pinned: false
 
 A simple, functional, and aesthetically pleasing local business directory for Nigerian businesses built with FastAPI and SQLite.
 
-## Features
-- List of local businesses.
-- Search by name or category.
-- Form to submit new businesses.
-- One-click Call and WhatsApp buttons.
-- Fully responsive design using Tailwind CSS.
+## 🚀 Core Features
+- **Categorization**: Filter businesses by **Category, State, City, and Job Vacancy**.
+- **Verified Badges**: Highlighting legit and verified business listings.
+- **Interactive UI**: Modern, glassmorphism design with responsive Tailwind CSS.
+- **One-Click Contact**: Direct Call and WhatsApp buttons for instant connection.
+- **Business Submission**: Easy-to-use form with real-time validation.
 
 ## Prerequisites
 - Python 3.9+

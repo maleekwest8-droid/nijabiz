@@ -8,6 +8,11 @@ class BusinessBase(BaseModel):
     whatsapp: str
     address: str
     description: str
+    region: Optional[str] = "South West"
+    state: Optional[str] = "Lagos"
+    city: Optional[str] = "Lagos"
+    vacancy_status: Optional[str] = "None"
+    is_verified: Optional[int] = 0
 
 class BusinessCreate(BusinessBase):
     pass
