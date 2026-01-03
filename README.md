@@ -1,3 +1,13 @@
+---
+title: NijaBiz Local Directory
+emoji: 💼
+colorFrom: green
+colorTo: gray
+sdk: docker
+license: mit
+pinned: false
+---
+
 # NijaBiz - Local Business Directory MVP
 
 A simple, functional, and aesthetically pleasing local business directory for Nigerian businesses built with FastAPI and SQLite.
@@ -51,26 +61,56 @@ curl -X POST http://127.0.0.1:8000/businesses \
 
 ## Deployment Instructions
 
-### Backend (Render) - RECOMMENDED
-1. I have included a `render.yaml` file. When you connect your GitHub repo to Render, it will offer to deploy your "Blueprint".
-2. This blueprint automatically creates:
-   - A **Web Service** for your FastAPI app.
-   - A **PostgreSQL Database** for persistent storage (so your data never disappears!).
-3. Render will automatically set the `DATABASE_URL` for you.
-4. Just click **"Apply"** on the Render dashboard after connecting your repository.
+## 🚀 Deployment (100% Free Forever)
 
-### Backend (Railway)
-1. Link your repo to [Railway](https://railway.app).
-2. It will auto-detect the requirements and start command.
-3. You can add a **Postgres Plugin** and Railway will automatically inject the `DATABASE_URL` environment variable.
+### Option A: Render + Supabase (Recommended)
+- **App**: [Render](https://render.com/)
+- **Database**: [Supabase](https://supabase.com/)
+- **Pros**: Persistent data, very easy to setup.
 
-### Frontend (Vercel)
-Since this is a FastAPI app serving static files, you can deploy the whole thing as a single service on Render/Railway. If you want to deploy the frontend separately on Vercel:
-1. Change `API_URL` in `index.html` to your deployed backend URL.
-2. Push the `static/` directory to a repo.
-3. Deploy to Vercel as a static site.
+### Option B: Koyeb (Great Alternative)
+- **Platform**: [Koyeb](https://www.koyeb.com/)
+- **Tier**: "Nano" (Free)
+- **How**: Deploy via GitHub, use `DATABASE_URL` for persistence.
 
-## Known Limitations
-- SQLite database is file-based and may not persist between redeploys on free hosting (Render free tier).
-- No authentication for business submission (MVP constraint).
-- Minimal search logic (case-insensitive substring match).
+### Option C: Oracle Cloud (Most Powerful)
+- **Platform**: [Oracle Cloud Always Free](https://www.oracle.com/cloud/free/)
+- **Specs**: 4 ARM OCPUs, 24GB RAM (Incredible for free).
+- **Cons**: Requires a credit card for identity verification and can be hard to sign up.
+
+### Option D: Hugging Face Spaces
+- **Platform**: [Hugging Face](https://huggingface.co/spaces)
+- **Tier**: CPU Basic (Free)
+- **How**: Select "Docker" template, upload your code, and it runs for free forever.
+
+### Option E: Vercel (Fastest Frontend)
+- **Platform**: [Vercel](https://vercel.com/)
+- **How**: Best if you just want to host the `static/` folder as a frontend and point it to a backend.
+
+---
+
+## 🏗 Comparison Table
+
+| Platform | Ease of Use | Persistence | Best For |
+| :--- | :--- | :--- | :--- |
+| **Render** | ⭐⭐⭐⭐⭐ | Needs Ext. DB | Beginners |
+| **Koyeb** | ⭐⭐⭐⭐ | Needs Ext. DB | Quick Deploys |
+| **Supabase** | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Databases Only |
+| **Oracle** | ⭐ | ⭐⭐⭐⭐⭐ | Large Apps |
+| **HuggingFace** | ⭐⭐⭐ | ⭐⭐⭐ | Docker/Python |
+
+---
+
+## 🛠 Project Structure
+```text
+proj 3/
+├── main.py              # FastAPI routes (The Brain)
+├── models.py            # Database tables
+├── schemas.py           # Data validation
+├── database.py          # Connection logic (SQLite or Postgres)
+├── requirements.txt     # Needed libraries
+├── render.yaml          # Auto-deploy config for Render
+├── .env.example         # Example settings
+└── static/
+    └── index.html       # The Beautiful Frontend
+```

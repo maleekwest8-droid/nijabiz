@@ -2,16 +2,29 @@ import os
 from fastapi import FastAPI, Depends, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
-import models, schemas, database
+import models, schemas, database, seed_data
 from database import engine, get_db
+
+# Calculate the directory where main.py is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 
 # Create database tables
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Nigerian Local Business Directory")
+
+@app.on_event("startup")
+def startup_event():
+    db = database.SessionLocal()
+    try:
+        seed_data.seed_businesses(db)
+    finally:
+        db.close()
 
 # CORS middleware
 app.add_middleware(
@@ -23,6 +36,23 @@ app.add_middleware(
 )
 
 # CRUD Endpoints
+
+@app.get("/")
+def read_root():
+    # Try static/index.html first, then root index.html
+    paths_to_check = [
+        os.path.join(STATIC_DIR, "index.html"),
+        os.path.join(BASE_DIR, "index.html")
+    ]
+    
+    for path in paths_to_check:
+        if os.path.exists(path):
+            return FileResponse(path)
+            
+    return {
+        "error": "index.html not found",
+        "tip": "Ensure index.html is in your repository root or in a folder named 'static'."
+    }
 
 @app.get("/health")
 def health_check():
@@ -59,10 +89,10 @@ def create_business(business: schemas.BusinessCreate, db: Session = Depends(get_
 
 # Serve static files
 # Ensure the static directory exists
-if not os.path.exists("static"):
-    os.makedirs("static")
+if not os.path.exists(STATIC_DIR):
+    os.makedirs(STATIC_DIR)
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 if __name__ == "__main__":
     import uvicorn
