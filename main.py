@@ -64,28 +64,39 @@ def health_check():
 
 @app.get("/businesses", response_model=List[schemas.Business])
 def get_businesses(
-    search: Optional[str] = Query(None, description="Search by name or category"),
+    search: Optional[str] = Query(None, description="Search by name, category, or description"),
+    region: Optional[str] = Query(None),
     state: Optional[str] = Query(None),
     city: Optional[str] = Query(None),
     vacancy: Optional[str] = Query(None),
+    is_verified: Optional[bool] = Query(None),
+    min_rating: Optional[float] = Query(None),
     skip: int = 0,
     limit: int = 10,
     db: Session = Depends(get_db)
 ):
     query = db.query(models.Business)
-    # ... filters ...
+    
     if search:
         search_filter = f"%{search}%"
         query = query.filter(
             (models.Business.name.ilike(search_filter)) | 
-            (models.Business.category.ilike(search_filter))
+            (models.Business.category.ilike(search_filter)) |
+            (models.Business.description.ilike(search_filter)) |
+            (models.Business.address.ilike(search_filter))
         )
+    if region:
+        query = query.filter(models.Business.region.ilike(f"%{region}%"))
     if state:
         query = query.filter(models.Business.state.ilike(f"%{state}%"))
     if city:
         query = query.filter(models.Business.city.ilike(f"%{city}%"))
     if vacancy:
         query = query.filter(models.Business.vacancy_status.ilike(f"%{vacancy}%"))
+    if is_verified is not None:
+        query = query.filter(models.Business.is_verified == (1 if is_verified else 0))
+    if min_rating is not None:
+        query = query.filter(models.Business.average_rating >= min_rating)
         
     return query.order_by(models.Business.is_featured.desc()).offset(skip).limit(limit).all()
 

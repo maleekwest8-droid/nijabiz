@@ -111,7 +111,7 @@
 
             <div class="relative max-w-4xl mx-auto space-y-4">
                 <div class="relative">
-                    <input type="text" id="searchInput" placeholder="Search by name or category..."
+                    <input type="text" id="searchInput" placeholder="Search by name, category, or description..."
                         class="w-full pl-12 pr-4 py-4 bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all outline-none">
                     <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -122,24 +122,44 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+                    <select id="regionFilter"
+                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none uppercase text-[10px] font-bold tracking-wider">
+                        <option value="">All Regions</option>
+                        <option value="North Central">North Central</option>
+                        <option value="North East">North East</option>
+                        <option value="North West">North West</option>
+                        <option value="South East">South East</option>
+                        <option value="South South">South South</option>
+                        <option value="South West">South West</option>
+                    </select>
                     <select id="stateFilter"
-                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
+                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none uppercase text-[10px] font-bold tracking-wider">
                         <option value="">All States</option>
-                        <option value="Lagos">Lagos</option>
-                        <option value="Abuja">Abuja</option>
-                        <option value="Rivers">Rivers</option>
-                        <option value="Imo">Imo</option>
-                        <option value="Kano">Kano</option>
                     </select>
-                    <input type="text" id="cityFilter" placeholder="Filter by City (e.g. Lekki)"
-                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
+                    <input type="text" id="cityFilter" placeholder="City..."
+                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none uppercase text-[10px] font-bold tracking-wider">
                     <select id="vacancyFilter"
-                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none">
-                        <option value="">All Job Status</option>
-                        <option value="Vacancy Available">Hiring</option>
-                        <option value="None">No Vacancy</option>
+                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none uppercase text-[10px] font-bold tracking-wider">
+                        <option value="">Hiring</option>
+                        <option value="Vacancy Available">Hiring Only</option>
+                        <option value="None">Not Hiring</option>
                     </select>
+                    <select id="ratingFilter"
+                        class="px-4 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 outline-none uppercase text-[10px] font-bold tracking-wider">
+                        <option value="">Rating</option>
+                        <option value="4">4+ Stars</option>
+                        <option value="3">3+ Stars</option>
+                        <option value="2">2+ Stars</option>
+                    </select>
+                    <div
+                        class="flex items-center justify-center space-x-2 px-3 py-3 bg-white dark:bg-dark-card dark:text-white border border-slate-200 dark:border-dark-border rounded-xl shadow-sm">
+                        <input type="checkbox" id="verifiedFilter"
+                            class="w-4 h-4 text-green-600 rounded cursor-pointer">
+                        <label for="verifiedFilter"
+                            class="text-[9px] font-bold text-slate-500 uppercase tracking-wider cursor-pointer whitespace-nowrap">Verified
+                            Only</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -326,6 +346,46 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const pageInfo = document.getElementById('pageInfo');
+        const regionFilter = document.getElementById('regionFilter');
+
+        const NIGERIA_LOCATIONS = {
+            "North Central": ["Benue", "FCT (Abuja)", "Kogi", "Kwara", "Nasarawa", "Niger", "Plateau"],
+            "North East": ["Adamawa", "Bauchi", "Borno", "Gombe", "Taraba", "Yobe"],
+            "North West": ["Kaduna", "Kano", "Katsina", "Kebbi", "Jigawa", "Sokoto", "Zamfara"],
+            "South East": ["Abia", "Anambra", "Ebonyi", "Enugu", "Imo"],
+            "South South": ["Akwa Ibom", "Bayelsa", "Cross River", "Delta", "Edo", "Rivers"],
+            "South West": ["Ekiti", "Lagos", "Ogun", "Ondo", "Osun", "Oyo"]
+        };
+
+        function updateStateFilter() {
+            const region = regionFilter.value;
+            const stateFilter = document.getElementById('stateFilter');
+            stateFilter.innerHTML = '<option value="">All States</option>';
+
+            if (region && NIGERIA_LOCATIONS[region]) {
+                NIGERIA_LOCATIONS[region].forEach(state => {
+                    const opt = document.createElement('option');
+                    opt.value = state;
+                    opt.innerText = state;
+                    stateFilter.appendChild(opt);
+                });
+            } else {
+                // If no region selected, show all states (summary)
+                Object.values(NIGERIA_LOCATIONS).flat().sort().forEach(state => {
+                    const opt = document.createElement('option');
+                    opt.value = state;
+                    opt.innerText = state;
+                    stateFilter.appendChild(opt);
+                });
+            }
+        }
+
+        regionFilter.addEventListener('change', () => {
+            updateStateFilter();
+            fetchBusinesses();
+        });
+
+        updateStateFilter(); // Initial Load
         const themeToggle = document.getElementById('themeToggle');
         const sunIcon = document.getElementById('sunIcon');
         const moonIcon = document.getElementById('moonIcon');
@@ -360,15 +420,21 @@
         // Fetch and display businesses
         async function fetchBusinesses() {
             const search = searchInput.value;
+            const region = document.getElementById('regionFilter').value;
             const state = stateFilter.value;
             const city = cityFilter.value;
             const vacancy = vacancyFilter.value;
+            const verified = document.getElementById('verifiedFilter').checked;
+            const minRating = document.getElementById('ratingFilter').value;
             const skip = (currentPage - 1) * limit;
 
             let query = `?search=${encodeURIComponent(search)}&skip=${skip}&limit=${limit + 1}`;
+            if (region) query += `&region=${encodeURIComponent(region)}`;
             if (state) query += `&state=${encodeURIComponent(state)}`;
             if (city) query += `&city=${encodeURIComponent(city)}`;
             if (vacancy) query += `&vacancy=${encodeURIComponent(vacancy)}`;
+            if (verified) query += `&is_verified=true`;
+            if (minRating) query += `&min_rating=${minRating}`;
 
             try {
                 const response = await fetch(`${API_URL}${query}`);
@@ -467,6 +533,8 @@
         stateFilter.addEventListener('change', fetchBusinesses);
         cityFilter.addEventListener('input', triggerFetch);
         vacancyFilter.addEventListener('change', fetchBusinesses);
+        document.getElementById('verifiedFilter').addEventListener('change', fetchBusinesses);
+        document.getElementById('ratingFilter').addEventListener('change', fetchBusinesses);
 
         async function trackClick(businessId, url = null) {
             try {
